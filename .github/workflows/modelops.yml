@@ -51,7 +51,22 @@ jobs:
     - name: update sha in k8
       run: sed -i 's/{github.sha}/${{ github.sha }}/g' manifests/linear_model_k8s.yaml
 
-    - name: list  
+    - name: list
+      run: cat manifests/linear_model_k8s.yaml
+
+    - uses: okteto/context@2.7.0
+      with:
+        token: ${{secrets.OKTETO_TOKEN }}
+
+    - name: Deploy and Wait
+      uses: okteto/actions/deploy@v1
+      env:
+        KUBECONFIG: ${{ steps.namespace.outputs.kubeconfig }}
+      with:
+        namespace: ${{secrets.OKTETO_NAMESPACE }}
+        manifest: manifests/linear_model_k8s.yaml
+        tag: ${{ secrets.DOCKER_USERNAME }}/tensorflow_${{secrets.MODEL_NAME}}:${{ github.sha }}
+
     
 
       
