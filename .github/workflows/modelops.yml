@@ -52,7 +52,7 @@ jobs:
       run: sed -i 's/{github.sha}/${{ github.sha }}/g' manifests/linear_model_k8s.yaml
 
     - name: list  
-
+    
 
       
       
